@@ -10,7 +10,7 @@ export default class JobForm extends Component {
   }
 
   handleChange(event) {
-    const { name, value } = this.state;
+    const { name, value } = event;
     this.setState({
       [name]: value
     });
@@ -54,7 +54,7 @@ export default class JobForm extends Component {
             </div>
             <div className="field">
               <div className="control">
-                <button className="button is-link" onClick={this.handleClick.bind(this)}>Submit</button>
+                <button className="button is-link" onClick={this.handleSubmit.bind(this)}>Submit</button>
               </div>
             </div>
           </form>

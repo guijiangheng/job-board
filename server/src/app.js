@@ -1,40 +1,26 @@
+const cors = require('cors');
+const bodyParser = require('body-parser');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
-const { ApolloServer } = require('apollo-server-express');
 
 const db = require('./db');
+const installGraphQL = require('./graphql-server');
 
-const port = 3000;
 const secret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 
 const app = express();
 
-app.use(expressJwt({
-  secret,
-  credentialsRequired: false
-}));
+app.use(
+  cors(),
+  bodyParser(),
+  expressJwt({
+    secret,
+    credentialsRequired: false
+  })
+);
 
-const typeDefs = `
-  type Query {
-    greeting: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    greeting: () => 'hello graphql'
-  }
-};
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers
-});
-server.applyMiddleware({
-  app,
-  path: '/graphql'
-});
+installGraphQL(app);
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -47,4 +33,5 @@ app.post('/login', (req, res) => {
   res.send({ token });
 });
 
+const port = 9000;
 app.listen(port, () => console.log(`server start on port ${port}.`));
