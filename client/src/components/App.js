@@ -4,6 +4,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { isLoggedIn, logout } from '../utils/auth';
 import NavBar from './NavBar';
 import JobBoard from './JobBoard';
+import LoginForm from './LoginForm';
+import JobDetail from './JobDetail';
+import CompanyDetail from './CompanyDetail';
+import JobForm from './JobForm';
 
 export default class App extends Component {
   constructor(props) {
@@ -34,6 +38,10 @@ export default class App extends Component {
             <div className="container">
               <Switch>
                 <Route exact path="/" component={JobBoard} />
+                <Route exact path="/login" render={() => <LoginForm onLogin={this.handleLoginIn.bind(this)} />} />
+                <Route exact path="jobs/new" component={JobForm} />
+                <Route path="/jobs/:jobId" component={JobDetail} />
+                <Route path="/companies/:companyId" component={CompanyDetail} />
               </Switch>
             </div>
           </section>
